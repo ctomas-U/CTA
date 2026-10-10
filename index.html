@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#120d12">
+<title>写给你</title>
+<style>
+  :root{
+    --bg1:#1b1318;
+    --bg2:#0d0a0e;
+    --ink:#f5eadf;
+    --ink-dim:#cdb9ab;
+    --glow:#f2c9a5;
+    --accent:#e9a98f;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(242,201,165,0.14), transparent 70%),
+      radial-gradient(ellipse 70% 45% at 50% 100%, rgba(233,169,143,0.10), transparent 70%),
+      linear-gradient(180deg, var(--bg1), var(--bg2));
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:'Kaiti SC','STKaiti','KaiTi','Noto Serif CJK SC','Noto Serif SC','Songti SC','SimSun',serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  #motes{ position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+
+  .page{
+    position:relative; z-index:1;
+    max-width:34rem;
+    margin:0 auto;
+    padding:max(14vh,5rem) 1.6rem max(16vh,6rem);
+  }
+  .head{
+    text-align:center;
+    margin-bottom:3.4rem;
+    opacity:0;
+    animation:rise 2.2s ease-out 0.3s forwards;
+  }
+  .head h1{
+    font-weight:400;
+    font-size:clamp(1.9rem,8vw,2.6rem);
+    letter-spacing:0.35em;
+    padding-left:0.35em;
+    color:var(--ink);
+    text-shadow:0 0 28px rgba(242,201,165,0.35);
+  }
+  .head .rule{
+    width:46px; height:1px; margin:1.4rem auto 0;
+    background:linear-gradient(90deg,transparent,var(--glow),transparent);
+  }
+
+  p{
+    font-size:clamp(1.12rem,4.5vw,1.32rem);
+    line-height:2.05;
+    letter-spacing:0.06em;
+    color:var(--ink);
+    margin-bottom:2rem;
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity 1.6s ease, transform 1.6s ease;
+    text-shadow:0 0 14px rgba(242,201,165,0.12);
+  }
+  p.in{ opacity:1; transform:translateY(0); }
+  p.soft{ color:var(--ink-dim); }
+  p.ask{
+    text-align:center;
+    font-size:clamp(1.3rem,5.4vw,1.6rem);
+    margin:3rem 0 3rem;
+    text-shadow:0 0 22px rgba(242,201,165,0.4);
+  }
+  p.last{
+    text-align:center;
+    font-size:clamp(1.5rem,6.4vw,1.9rem);
+    color:var(--glow);
+    margin-top:3.2rem;
+    text-shadow:0 0 26px rgba(242,201,165,0.55);
+  }
+  .sign{
+    text-align:center;
+    margin-top:2.4rem;
+    font-size:1.6rem;
+    opacity:0;
+    transition:opacity 2s ease;
+  }
+  .sign.in{ opacity:0.85; }
+
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    p, .head, .sign{ transition:none; animation:none; opacity:1; transform:none; }
+    #motes{ display:none; }
+  }
+</style>
+</head>
+<body>
+<canvas id="motes"></canvas>
+
+<main class="page">
+  <header class="head">
+    <h1>写给你</h1>
+    <div class="rule"></div>
+  </header>
+
+  <p>你好。有时候我觉得，最好的沟通方式，是先静下来，把心里的话写在纸上。</p>
+
+  <p>首先，我想为今天早上让你生气，向你道歉。我真的不是故意的，更不想给你增加压力，也从没想过会把你惹哭、毁了你的一天——我知道，我确实做到了。</p>
+
+  <p>我说的那些话，并不是在责怪你，也不是想让你难受，我只是想把心里的想法说出来而已。</p>
+
+  <p>我也说过，我有点傻，有时候会犯错，而这一次，就是其中之一。我没有想到，你早上本来就因为没睡够而很疲惫、很烦躁。我明白你有多累，有多想好好睡一觉。我真的不想给你压力。</p>
+
+  <p>说实话，我有时候也不够成熟，会做错事。可我想让你知道，不管什么时候，我都爱你。</p>
+
+  <p>我知道你在生气，可我真的不想和你吵架，不想你生我的气，更不想失去你。我无限地爱着你。</p>
+
+  <p>希望你能接受我最真诚的歉意。我也想再一次告诉你，你对我有多重要。这一次，我真的有点傻 🥲</p>
+
+  <p class="ask">所以……你可以原谅我吗？🥺</p>
+
+  <p class="soft">我不想让你有压力，不想让你焦虑，更不想惹你生气，这是我最不愿意做的事。我只想让你清清楚楚地知道：</p>
+
+  <p>我用我全部的心爱你，我不想失去你。</p>
+
+  <p class="last">我爱你，听到了吗？</p>
+
+  <div class="sign" id="sign">🤍</div>
+</main>
+
+<script>
+(function(){
+  /* Aparición suave de cada párrafo al llegar a la vista */
+  var items = Array.prototype.slice.call(document.querySelectorAll('p'));
+  var sign = document.getElementById('sign');
+  function show(el){ el.classList.add('in'); }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ show(e.target); io.unobserve(e.target); }
+      });
+    }, { threshold:0.35, rootMargin:'0px 0px -6% 0px' });
+    items.forEach(function(p){ io.observe(p); });
+    io.observe(sign);
+  } else {
+    items.forEach(show); show(sign);
+  }
+
+  /* Lucecitas cálidas que flotan muy despacio (tipo luz de vela) */
+  var cv = document.getElementById('motes');
+  if(!cv || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ctx = cv.getContext('2d'), W, H, DPR, motes = [];
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio||1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W*DPR; cv.height = H*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  function make(initial){
+    return {
+      x: Math.random()*W,
+      y: initial ? Math.random()*H : H+20,
+      r: 0.8 + Math.random()*2.2,
+      vy: 0.08 + Math.random()*0.22,
+      sway: Math.random()*6.28,
+      sp: 0.004 + Math.random()*0.008,
+      a: 0.25 + Math.random()*0.45
+    };
+  }
+  var N = 38;
+  for(var i=0;i<N;i++) motes.push(make(true));
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<motes.length;i++){
+      var m = motes[i];
+      m.y -= m.vy; m.sway += m.sp;
+      m.x += Math.sin(m.sway)*0.25;
+      if(m.y < -20){ motes[i] = make(false); continue; }
+      var fade = Math.min(1, (H-m.y)/120) * Math.min(1, (m.y+20)/160);
+      var g = ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.r*5);
+      g.addColorStop(0,'rgba(255,226,190,'+(m.a*fade)+')');
+      g.addColorStop(1,'rgba(255,226,190,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(m.x,m.y,m.r*5,0,6.2832); ctx.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
